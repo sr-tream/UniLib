@@ -6,7 +6,7 @@ class DLLEXPORT CCreateTexture
 {
 public:
 	CCreateTexture(IDirect3DDevice9 *pDevice, int width, int height);
-	virtual ~CCreateTexture();
+	~CCreateTexture();
 
 	virtual void Begin();
 	virtual void End();
@@ -19,9 +19,9 @@ public:
 	virtual void Init();
 	virtual void ReInit( int width, int height );
 
-	ID3DXSprite* GetSprite();
-	IDirect3DTexture9* GetTexture();
-	D3DSURFACE_DESC GetSurfaceDesc();
+	virtual ID3DXSprite* GetSprite();
+	virtual IDirect3DTexture9* GetTexture();
+	virtual D3DSURFACE_DESC GetSurfaceDesc();
 
 protected:
 	ID3DXSprite*			pSprite;
@@ -40,5 +40,5 @@ private:
 };
 
 
-DLLEXPORTC CCreateTexture* CALLBACK CreateTexture( IDirect3DDevice9 *pDevice, int width, int height );
-DLLEXPORTC void CALLBACK DestoryTexture( CCreateTexture* &pTexture );
+DLLEXPORTC CCreateTexture* CALLBACK CreateCTexture( IDirect3DDevice9 *pDevice, int width, int height );
+DLLEXPORTC void CALLBACK DestoryCTexture( CCreateTexture* &pTexture );

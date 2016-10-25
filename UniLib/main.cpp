@@ -54,7 +54,6 @@ void CALLBACK mainloop()
 		HookD3DReset = new CHookD3DReset( D3DReset );
 		HookD3DPresent = new CHookD3DPresent( D3DPresent );
 
-		MessageBoxA( nullptr, "Attached", "UniLib", MB_OK );
 		Init = true;
 	} else {
 		for ( int i = 0; i < listMainloop.size(); ++i )

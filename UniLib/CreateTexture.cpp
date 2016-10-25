@@ -165,12 +165,12 @@ D3DSURFACE_DESC CCreateTexture::GetSurfaceDesc()
 }
 
 
-DLLEXPORTC CCreateTexture* CALLBACK CreateTexture( IDirect3DDevice9 *pDevice, int width, int height )
+DLLEXPORTC CCreateTexture* CALLBACK CreateCTexture( IDirect3DDevice9 *pDevice, int width, int height )
 {
 	return new CCreateTexture( pDevice, width, width );
 }
 
-DLLEXPORTC void CALLBACK DestoryTexture( CCreateTexture* &pTexture )
+DLLEXPORTC void CALLBACK DestoryCTexture( CCreateTexture* &pTexture )
 {
 	delete pTexture;
 	pTexture = nullptr;

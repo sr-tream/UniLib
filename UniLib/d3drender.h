@@ -30,6 +30,8 @@ class	CD3DRender;
 #define FCR_BOLD	0x1
 #define FCR_ITALICS 0x2
 #define FCR_BORDER	0x4
+#define FCR_UNDERLINE	0x8
+#define FCR_STRIKEOUT	0x10
 
 //FVF Macros
 #define D3DFVF_BITMAPFONT	( D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1 )

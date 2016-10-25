@@ -327,8 +327,8 @@ HRESULT CD3DFont::Initialize ( IDirect3DDevice9 *pD3Ddev )
 	int		iHeight = -m_fontHeight * (int)GetDeviceCaps( hDC, LOGPIXELSY ) / 72;
 
 	HFONT	hFont = CreateFont( iHeight, 0, 0, 0, (m_dwCreateFlags & FCR_BOLD) ? FW_BOLD : FW_NORMAL,
-								m_dwCreateFlags & FCR_ITALICS, false, false, DEFAULT_CHARSET, OUT_TT_PRECIS,
-								CLIP_DEFAULT_PRECIS, PROOF_QUALITY, VARIABLE_PITCH, m_szFontName );
+								m_dwCreateFlags & FCR_ITALICS, m_dwCreateFlags & FCR_UNDERLINE, m_dwCreateFlags & FCR_STRIKEOUT,
+								DEFAULT_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, VARIABLE_PITCH, m_szFontName );
 
 	if ( hFont == NULL )
 	{
