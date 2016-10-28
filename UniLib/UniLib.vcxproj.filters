@@ -9,9 +9,11 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Файлы ресурсов">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Заголовочные файлы\RakNet">
+      <UniqueIdentifier>{eb62f8e3-af70-4b04-b654-9a1f1d9e4e16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\RakNet">
+      <UniqueIdentifier>{1205347e-a3dc-443d-98a8-679d30cd2f09}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -32,6 +34,18 @@
     </ClCompile>
     <ClCompile Include="DrawInfo.cpp">
       <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="SampInfo.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="BitStream.cpp">
+      <Filter>Файлы исходного кода\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="HookedRakClient.cpp">
+      <Filter>Файлы исходного кода\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="RakClient.cpp">
+      <Filter>Файлы исходного кода\RakNet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +72,18 @@
     </ClInclude>
     <ClInclude Include="DrawInfo.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SampInfo.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="BitStream.h">
+      <Filter>Заголовочные файлы\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="HookedRakClient.h">
+      <Filter>Заголовочные файлы\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="RakClient.h">
+      <Filter>Заголовочные файлы\RakNet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

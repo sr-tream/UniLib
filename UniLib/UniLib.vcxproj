@@ -86,22 +86,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BitStream.cpp" />
     <ClCompile Include="CreateTexture.cpp" />
     <ClCompile Include="d3drender.cpp" />
     <ClCompile Include="DrawInfo.cpp" />
     <ClCompile Include="FontInfo.cpp" />
+    <ClCompile Include="HookedRakClient.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RakClient.cpp" />
+    <ClCompile Include="SampInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BitStream.h" />
     <ClInclude Include="CHooks.hpp" />
     <ClInclude Include="CMem.hpp" />
     <ClInclude Include="CreateTexture.h" />
     <ClInclude Include="d3drender.h" />
     <ClInclude Include="DrawInfo.h" />
     <ClInclude Include="FontInfo.h" />
+    <ClInclude Include="HookedRakClient.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="RakClient.h" />
+    <ClInclude Include="SampInfo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

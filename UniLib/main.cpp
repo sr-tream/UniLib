@@ -1,10 +1,16 @@
 #include "main.h"
 IDirect3DDevice9* g_Device;
 bool g_Initialize = false;
+DWORD g_SampAddr = NULL;
+struct stSAMP* g_SAMP;
 
 CHookCallSafe *HookMainloop;
 CHookD3DReset *HookD3DReset;
 CHookD3DPresent *HookD3DPresent;
+CHookJmp *HookRPC1;
+CHookJmp *HookRPC2;
+CHookCallNoSafe *HookCNetDestructor1;
+CHookCallNoSafe *HookCNetDestructor2;
 
 std::vector<CFontInfo*> listFontInfo;
 std::vector<CDrawInfo*> listDrawInfo;
@@ -35,6 +41,10 @@ BOOL APIENTRY DllMain( HMODULE hModule, DWORD dwReasonForCall, LPVOID lpReserved
 	case DLL_THREAD_DETACH:
 		break;
 	case DLL_PROCESS_DETACH:
+		delete_s( HookCNetDestructor2 );
+		delete_s( HookCNetDestructor1 );
+		delete_s( HookRPC2 );
+		delete_s( HookRPC1 );
 		delete_s( HookD3DPresent );
 		delete_s( HookD3DReset );
 		delete_s( HookMainloop );
@@ -43,16 +53,97 @@ BOOL APIENTRY DllMain( HMODULE hModule, DWORD dwReasonForCall, LPVOID lpReserved
 	return TRUE;
 }
 
+DWORD hook_handle_rpc_packet_jmp;
+void _declspec (naked) hook_handle_rpc_packet( void )
+{
+	static RPCParameters *pRPCParams = nullptr;
+	static RPCNode *pRPCNode = nullptr;
+	static DWORD dwTmp = 0;
+	static bool result = true;
+
+	__asm pushad;
+	__asm mov pRPCParams, eax;
+	__asm mov pRPCNode, edi;
+
+	result = HandleRPCPacketFunc( pRPCNode->uniqueIdentifier, pRPCParams );
+	dwTmp = g_SampAddr + SAMP_HOOKEXIT_HANDLE_RPC;
+
+	__asm popad;
+	if ( !result )
+		__asm jmp dwTmp;
+	__asm jmp hook_handle_rpc_packet_jmp;
+}
+
+DWORD hook_handle_rpc_packet2_jmp;
+void _declspec (naked) hook_handle_rpc_packet2( void )
+{
+	static RPCParameters *pRPCParams = nullptr;
+	static RPCNode *pRPCNode = nullptr;
+	static DWORD dwTmp = 0;
+	static bool result = true;
+
+	__asm pushad;
+	__asm mov pRPCParams, ecx;
+	__asm mov pRPCNode, edi;
+
+	result = HandleRPCPacketFunc( pRPCNode->uniqueIdentifier, pRPCParams );
+	dwTmp = g_SampAddr + SAMP_HOOKEXIT_HANDLE_RPC2;
+
+	__asm popad;
+	if ( !result )
+		__asm jmp dwTmp;
+	__asm jmp hook_handle_rpc_packet_jmp;
+}
+
+void __stdcall CNetGame__destructor( void )
+{
+	// release hooked rakclientinterface, restore original rakclientinterface address and call CNetGame destructor
+	if ( g_SAMP->pRakClientInterface != NULL )
+		delete g_SAMP->pRakClientInterface;
+	g_SAMP->pRakClientInterface = g_RakClient->GetInterface();
+	return ((void( __thiscall * ) (void *)) (g_SampAddr + SAMP_FUNC_CNETGAMEDESTRUCTOR))(g_SAMP);
+}
+
 void CALLBACK mainloop()
 {
 	static bool Init = false;
 
 	if ( !Init ){
+		static bool preloadHooks = false;
+		if ( !preloadHooks ){
+			g_SampAddr = (DWORD)GetModuleHandle( "samp.dll" );
+			if ( g_SampAddr == NULL )
+				return;
+
+			g_SAMP = GetSAMPPtrInfo<stSAMP *>( SAMP_INFO_OFFSET );
+			if ( g_SAMP == nullptr )
+				return;
+
+			DWORD oldProtect;
+			VirtualProtect( g_SAMP->pRakClientInterface, 4, PAGE_EXECUTE_READWRITE, &oldProtect );
+			g_RakClient = new RakClient( g_SAMP->pRakClientInterface );
+			g_SAMP->pRakClientInterface = new HookedRakClientInterface();
+			VirtualProtect( g_SAMP->pRakClientInterface, 4, oldProtect, nullptr );
+
+			HookRPC1 = new CHookJmp( g_SampAddr + SAMP_HOOKENTER_HANDLE_RPC, hook_handle_rpc_packet, 6 );
+			HookRPC2 = new CHookJmp( g_SampAddr + SAMP_HOOKENTER_HANDLE_RPC2, hook_handle_rpc_packet, 8 );
+
+			hook_handle_rpc_packet_jmp = HookRPC1->GetExitAddress();
+			hook_handle_rpc_packet2_jmp = HookRPC2->GetExitAddress();
+
+			HookCNetDestructor1 = new CHookCallNoSafe( g_SampAddr + SAMP_HOOKENTER_CNETGAME_DESTR, CNetGame__destructor );
+			HookCNetDestructor2 = new CHookCallNoSafe( g_SampAddr + SAMP_HOOKENTER_CNETGAME_DESTR2, CNetGame__destructor );
+
+			preloadHooks = true;
+		}
+
 		if ( *(int*)0xC8D4C0 != 9 )
 			return;
 
 		HookD3DReset = new CHookD3DReset( D3DReset );
 		HookD3DPresent = new CHookD3DPresent( D3DPresent );
+
+		//AddChatMessage( -1, "Hello UniLib" );
 
 		Init = true;
 	} else {
@@ -83,4 +174,11 @@ void CALLBACK D3DPresent( IDirect3DDevice9* pDevice )
 
 	for ( int i = 0; i < listPresent.size(); ++i )
 		listPresent[i]( pDevice );
+}
+
+bool HandleRPCPacketFunc( unsigned char id, RPCParameters *rpcParams )
+{
+	/*if ( id == RPC_ShowDialog )
+		return false;*/
+	return true;
 }

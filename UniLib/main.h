@@ -6,6 +6,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <assert.h>
 #include <d3d9.h>
 #include <d3dx9core.h>
 
@@ -15,6 +16,8 @@
 
 extern IDirect3DDevice9* g_Device;
 extern bool g_Initialize;
+extern DWORD g_SampAddr;
+extern struct stSAMP* g_SAMP;
 
 template<typename T> void VectorErase( std::vector<T> &vec, T v );
 
@@ -25,10 +28,16 @@ template<typename T> void VectorErase( std::vector<T> &vec, T v );
 #include "FontInfo.h"
 #include "DrawInfo.h"
 #include "Interface.h"
+#include "SampInfo.h"
+
+#include "BitStream.h"
+#include "RakClient.h"
+#include "HookedRakClient.h"
 
 void CALLBACK mainloop();
 void CALLBACK D3DReset( IDirect3DDevice9* pDevice );
 void CALLBACK D3DPresent( IDirect3DDevice9* pDevice );
+bool HandleRPCPacketFunc( unsigned char id, RPCParameters *rpcParams );
 
 
 template<typename T>
