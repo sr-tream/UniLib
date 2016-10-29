@@ -47,6 +47,9 @@
     <ClCompile Include="RakClient.cpp">
       <Filter>Файлы исходного кода\RakNet</Filter>
     </ClCompile>
+    <ClCompile Include="BSInfo.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -84,6 +87,9 @@
     </ClInclude>
     <ClInclude Include="RakClient.h">
       <Filter>Заголовочные файлы\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="BSInfo.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

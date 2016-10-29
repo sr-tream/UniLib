@@ -311,20 +311,20 @@ public:
 	void SetWriteOffset( const int offset );
 
 	/// Returns the length in bits of the stream
-	inline int GetNumberOfBitsUsed( void ) const {return GetWriteOffset();}
-	inline int GetWriteOffset( void ) const {return numberOfBitsUsed;}
+	inline int GetNumberOfBitsUsed( void ) const { return GetWriteOffset(); }
+	inline int GetWriteOffset( void ) const { return numberOfBitsUsed; }
 
 	///Returns the length in bytes of the stream
-	inline int GetNumberOfBytesUsed( void ) const {return BITS_TO_BYTES( numberOfBitsUsed );}
+	inline int GetNumberOfBytesUsed( void ) const { return BITS_TO_BYTES( numberOfBitsUsed ); }
 
 	///Returns the number of bits into the stream that we have read
-	inline int GetReadOffset( void ) const {return readOffset;}
+	inline int GetReadOffset( void ) const { return readOffset; }
 
 	// Sets the read bit index
-	inline void SetReadOffset( int newReadOffset ) {readOffset=newReadOffset;}
+	inline void SetReadOffset( int newReadOffset ) { readOffset = newReadOffset; }
 
 	///Returns the number of bits left in the stream that haven't been read
-	inline int GetNumberOfUnreadBits( void ) const {return numberOfBitsUsed - readOffset;}
+	inline int GetNumberOfUnreadBits( void ) const { return numberOfBitsUsed - readOffset; }
 
 	/// Makes a copy of the internal data for you \a _data will point to
 	/// the stream. Returns the length in bits of the stream. Partial
@@ -339,7 +339,7 @@ public:
 	/// Gets the data that BitStream is writing to / reading from
 	/// Partial bytes are left aligned.
 	/// \return A pointer to the internal state 
-	inline unsigned char* GetData( void ) const {return data;}
+	inline unsigned char* GetData( void ) const { return data; }
 
 	/// Write numberToWrite bits from the input source Right aligned
 	/// data means in the case of a partial byte, the bits are aligned
@@ -350,7 +350,7 @@ public:
 	/// \param[in] input The data 
 	/// \param[in] numberOfBitsToWrite The number of bits to write 
 	/// \param[in] rightAlignedBits if true data will be right aligned 
-	void WriteBits( const unsigned char* input,	int numberOfBitsToWrite, const bool rightAlignedBits = true );
+	void WriteBits( const unsigned char* input, int numberOfBitsToWrite, const bool rightAlignedBits = true );
 
 	/// Align the bitstream to the byte boundary and then write the
 	/// specified number of bits.  This is faster than WriteBits but
@@ -358,7 +358,7 @@ public:
 	/// ReadAlignedBits at the corresponding read position.
 	/// \param[in] input The data
 	/// \param[in] numberOfBytesToWrite The size of data. 
-	void WriteAlignedBytes( const unsigned char *input,	const int numberOfBytesToWrite );
+	void WriteAlignedBytes( const unsigned char *input, const int numberOfBytesToWrite );
 
 	/// Read bits, starting at the next aligned bits. Note that the
 	/// modulus 8 starting offset of the sequence must be the same as
@@ -367,7 +367,7 @@ public:
 	/// \param[in] output The byte array larger than @em numberOfBytesToRead
 	/// \param[in] numberOfBytesToRead The number of byte to read from the internal state 
 	/// \return true if there is enough byte. 
-	bool ReadAlignedBytes( unsigned char *output,	const int numberOfBytesToRead );
+	bool ReadAlignedBytes( unsigned char *output, const int numberOfBytesToRead );
 
 	/// Align the next write and/or read to a byte boundary.  This can
 	/// be used to 'waste' bits to byte align for efficiency reasons It
@@ -391,7 +391,7 @@ public:
 	/// \param[in] numberOfBitsToRead The number of bits to read 
 	/// \param[in] alignBitsToRight if true bits will be right aligned. 
 	/// \return true if there is enough bits to read 
-	bool ReadBits( unsigned char *output, int numberOfBitsToRead,	const bool alignBitsToRight = true );
+	bool ReadBits( unsigned char *output, int numberOfBitsToRead, const bool alignBitsToRight = true );
 
 	/// Write a 0  
 	void Write0( void );

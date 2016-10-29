@@ -21,7 +21,7 @@
 
 */
 
-class HookedRakClientInterface/* : public OrigRakClientInterface*/
+class DLLEXPORT HookedRakClientInterface/* : public OrigRakClientInterface*/
 {
 public:
 	virtual ~HookedRakClientInterface() { };

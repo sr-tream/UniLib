@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BitStream.cpp" />
+    <ClCompile Include="BSInfo.cpp" />
     <ClCompile Include="CreateTexture.cpp" />
     <ClCompile Include="d3drender.cpp" />
     <ClCompile Include="DrawInfo.cpp" />
@@ -99,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BitStream.h" />
+    <ClInclude Include="BSInfo.h" />
     <ClInclude Include="CHooks.hpp" />
     <ClInclude Include="CMem.hpp" />
     <ClInclude Include="CreateTexture.h" />

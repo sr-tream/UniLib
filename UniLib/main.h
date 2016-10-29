@@ -27,17 +27,22 @@ template<typename T> void VectorErase( std::vector<T> &vec, T v );
 #include "CreateTexture.h"
 #include "FontInfo.h"
 #include "DrawInfo.h"
-#include "Interface.h"
 #include "SampInfo.h"
 
 #include "BitStream.h"
 #include "RakClient.h"
 #include "HookedRakClient.h"
+#include "BSInfo.h"
+
+#include "Interface.h"
 
 void CALLBACK mainloop();
 void CALLBACK D3DReset( IDirect3DDevice9* pDevice );
 void CALLBACK D3DPresent( IDirect3DDevice9* pDevice );
 bool HandleRPCPacketFunc( unsigned char id, RPCParameters *rpcParams );
+bool OnSendRPC( int uniqueID, BitStream *parameters, PacketPriority priority, PacketReliability reliability, char orderingChannel, bool shiftTimestamp );
+bool OnReceivePacket( Packet *p );
+bool OnSendPacket( BitStream * bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel );
 
 
 template<typename T>

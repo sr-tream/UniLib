@@ -25,33 +25,37 @@
 
 bool HookedRakClientInterface::RPC(int* uniqueID, BitStream *parameters, PacketPriority priority, PacketReliability reliability, char orderingChannel, bool shiftTimestamp)
 {
-	/*if (uniqueID != nullptr)
+	if (uniqueID != nullptr)
 	{
 		if (!OnSendRPC(*uniqueID, parameters, priority, reliability, orderingChannel, shiftTimestamp))
 			return false;
-	}*/
+	}
+	/*char RpcInfo[256];
+	sprintf( RpcInfo, "Id: %d\nPriority: %d\nReliability: %d\nChanel: %d\nTime: %d\nBS: %08X",
+			 *uniqueID, priority, reliability, orderingChannel, shiftTimestamp, parameters );
+	MessageBoxA( nullptr, RpcInfo, "UniLib", MB_OK );*/
 	return g_RakClient->GetInterface()->RPC(uniqueID, parameters, priority, reliability, orderingChannel, shiftTimestamp);
 }
 
 bool HookedRakClientInterface::Send(BitStream * bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel)
 {
-	/*if (bitStream != nullptr)
+	if (bitStream != nullptr)
 	{
 		if (!OnSendPacket(bitStream, priority, reliability, orderingChannel))
 			return false;
-	}*/
+	}
 	return g_RakClient->GetInterface()->Send(bitStream, priority, reliability, orderingChannel);
 }
 
 Packet *HookedRakClientInterface::Receive(void)
 {
 	Packet *p = g_RakClient->GetInterface()->Receive();
-	/*while (p != nullptr)
+	while (p != nullptr)
 	{
-		if ( p->data == nullptr || p->length == 0 )
+		if ( OnReceivePacket( p ) )
 			break;
 		g_RakClient->GetInterface()->DeallocatePacket(p);
-	}*/
+	}
 	return p;
 }
 

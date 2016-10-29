@@ -18,6 +18,10 @@ std::vector<void(CALLBACK*)()> listMainloop;
 std::vector<void(CALLBACK*)(IDirect3DDevice9*)> listPresent;
 std::vector<void(CALLBACK*)(IDirect3DDevice9*)> listReset;
 std::vector<CCreateTexture*> listCreateTexture;
+std::vector<bool(CALLBACK*)(unsigned char, RPCParameters *)> listHandleRPCPacket;
+std::vector<bool(CALLBACK*)(int, BitStream*, PacketPriority, PacketReliability, char, bool)> listSendRPC;
+std::vector<bool(CALLBACK*)(Packet*)> listRecive;
+std::vector<bool(CALLBACK*)(BitStream*, PacketPriority, PacketReliability, char)> listSendPacket;
 
 template<typename T>
 bool delete_s( T* pT )
@@ -36,6 +40,7 @@ BOOL APIENTRY DllMain( HMODULE hModule, DWORD dwReasonForCall, LPVOID lpReserved
 	switch ( dwReasonForCall )
 	{
 	case DLL_PROCESS_ATTACH:
+		//MessageBoxA( nullptr, std::string( "PlayerID=" + std::to_string( sizeof( PlayerID ) ) ).c_str(), "UniLib", MB_OK );
 		HookMainloop = new CHookCallSafe( 0x00748DA3, mainloop, 6 );
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
@@ -176,9 +181,42 @@ void CALLBACK D3DPresent( IDirect3DDevice9* pDevice )
 		listPresent[i]( pDevice );
 }
 
-bool HandleRPCPacketFunc( unsigned char id, RPCParameters *rpcParams )
+bool HandleRPCPacketFunc( unsigned char id, RPCParameters *rpcParams ) // in RPC
 {
-	/*if ( id == RPC_ShowDialog )
-		return false;*/
-	return true;
+	bool result = true;
+	for ( int i = 0; i < listHandleRPCPacket.size(); ++i ){
+		if ( !listHandleRPCPacket[i]( id, rpcParams ) )
+			result = false;
+	}
+	return result;
+}
+
+bool OnSendRPC( int uniqueID, BitStream *parameters, PacketPriority priority, PacketReliability reliability, char orderingChannel, bool shiftTimestamp ) // out RPC
+{
+	bool result = true;
+	for ( int i = 0; i < listSendRPC.size(); ++i ){
+		if ( !listSendRPC[i]( uniqueID, parameters, priority, reliability, orderingChannel, shiftTimestamp ) )
+			result = false;
+	}
+	return result;
+}
+
+bool OnReceivePacket( Packet *p ) // in Packet
+{
+	bool result = true;
+	for ( int i = 0; i < listRecive.size(); ++i ){
+		if ( !listRecive[i]( p ) )
+			result = false;
+	}
+	return result;
+}
+
+bool OnSendPacket( BitStream * bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel ) // out Packet
+{
+	bool result = true;
+	for ( int i = 0; i < listSendPacket.size(); ++i ){
+		if ( !listSendPacket[i]( bitStream, priority, reliability, orderingChannel ) )
+			result = false;
+	}
+	return result;
 }
