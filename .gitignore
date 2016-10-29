@@ -29,5 +29,6 @@
 # Fuck
 *.exp
 *.pdb
-*.obj
+*.sdf
 *.tlog
+*.log
