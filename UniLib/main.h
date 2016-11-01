@@ -43,6 +43,7 @@ bool HandleRPCPacketFunc( unsigned char id, RPCParameters *rpcParams );
 bool OnSendRPC( int uniqueID, BitStream *parameters, PacketPriority priority, PacketReliability reliability, char orderingChannel, bool shiftTimestamp );
 bool OnReceivePacket( Packet *p );
 bool OnSendPacket( BitStream * bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel );
+LRESULT APIENTRY WndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 
 
 template<typename T>

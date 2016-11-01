@@ -3,6 +3,7 @@ IDirect3DDevice9* g_Device;
 bool g_Initialize = false;
 DWORD g_SampAddr = NULL;
 struct stSAMP* g_SAMP;
+WNDPROC hOrigProc = NULL;
 
 CHookCallSafe *HookMainloop;
 CHookD3DReset *HookD3DReset;
@@ -22,6 +23,7 @@ std::vector<bool(CALLBACK*)(unsigned char, RPCParameters *)> listHandleRPCPacket
 std::vector<bool(CALLBACK*)(int, BitStream*, PacketPriority, PacketReliability, char, bool)> listSendRPC;
 std::vector<bool(CALLBACK*)(Packet*)> listRecive;
 std::vector<bool(CALLBACK*)(BitStream*, PacketPriority, PacketReliability, char)> listSendPacket;
+std::vector<bool(CALLBACK*)(HWND, UINT, WPARAM, LPARAM)> listWndProc;;
 
 template<typename T>
 bool delete_s( T* pT )
@@ -46,6 +48,7 @@ BOOL APIENTRY DllMain( HMODULE hModule, DWORD dwReasonForCall, LPVOID lpReserved
 	case DLL_THREAD_DETACH:
 		break;
 	case DLL_PROCESS_DETACH:
+		SetWindowLong( *(HWND*)0xC97C1C, GWL_WNDPROC, (LONG)(UINT_PTR)hOrigProc );
 		delete_s( HookCNetDestructor2 );
 		delete_s( HookCNetDestructor1 );
 		delete_s( HookRPC2 );
@@ -147,6 +150,7 @@ void CALLBACK mainloop()
 
 		HookD3DReset = new CHookD3DReset( D3DReset );
 		HookD3DPresent = new CHookD3DPresent( D3DPresent );
+		hOrigProc = (WNDPROC)SetWindowLong( *(HWND*)0xC97C1C, GWL_WNDPROC, (LONG)(UINT_PTR)WndProc );
 
 		//AddChatMessage( -1, "Hello UniLib" );
 
@@ -219,4 +223,16 @@ bool OnSendPacket( BitStream * bitStream, PacketPriority priority, PacketReliabi
 			result = false;
 	}
 	return result;
+}
+
+LRESULT APIENTRY WndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
+{
+	bool result = true;
+	for ( int i = 0; i < listWndProc.size(); ++i ){
+		if ( !listWndProc[i]( hwnd, uMsg, wParam, lParam ) )
+			result = false;
+	}
+	if ( result )
+		return CallWindowProc( hOrigProc, hwnd, uMsg, wParam, lParam );
+	else return FALSE;
 }

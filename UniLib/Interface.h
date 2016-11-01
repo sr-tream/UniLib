@@ -6,6 +6,7 @@ extern std::vector<bool(CALLBACK*)(unsigned char, RPCParameters *)> listHandleRP
 extern std::vector<bool(CALLBACK*)(int, BitStream*, PacketPriority, PacketReliability, char, bool)> listSendRPC;
 extern std::vector<bool(CALLBACK*)(Packet*)> listRecive;
 extern std::vector<bool(CALLBACK*)(BitStream*, PacketPriority, PacketReliability, char)> listSendPacket;
+extern std::vector<bool(CALLBACK*)(HWND, UINT, WPARAM, LPARAM)> listWndProc;
 
 DLLEXPORTC void CALLBACK RegisterMainloop( void(CALLBACK* pFunc)() );
 DLLEXPORTC void CALLBACK DestoryMainloop( void(CALLBACK* pFunc)() );
@@ -27,6 +28,9 @@ DLLEXPORTC void CALLBACK DestoryRecivePacket( bool(CALLBACK* pFunc)(Packet*p) );
 
 DLLEXPORTC void CALLBACK RegisterSendPacket( bool(CALLBACK* pFunc)(BitStream * bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel) );
 DLLEXPORTC void CALLBACK DestorySendPacket( bool(CALLBACK* pFunc)(BitStream * bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel) );
+
+DLLEXPORTC void CALLBACK RegisterWndProc( bool(CALLBACK* pFunc)(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) );
+DLLEXPORTC void CALLBACK DestoryWndProc( bool(CALLBACK* pFunc)(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) );
 
 
 DLLEXPORTC IDirect3DDevice9* CALLBACK GetD3DDevice();

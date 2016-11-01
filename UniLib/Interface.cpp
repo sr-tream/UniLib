@@ -110,6 +110,21 @@ DLLEXPORTC void CALLBACK DestorySendPacket( bool(CALLBACK* pFunc)(BitStream * bi
 	VectorErase( listSendPacket, pFunc );
 }
 
+DLLEXPORTC void CALLBACK RegisterWndProc( bool(CALLBACK* pFunc)(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) )
+{
+	if ( pFunc == nullptr )
+		return;
+
+	listWndProc.push_back( pFunc );
+}
+DLLEXPORTC void CALLBACK DestoryWndProc( bool(CALLBACK* pFunc)(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) )
+{
+	if ( pFunc == nullptr )
+		return;
+
+	VectorErase( listWndProc, pFunc );
+}
+
 
 DLLEXPORTC IDirect3DDevice9* CALLBACK GetD3DDevice()
 {
