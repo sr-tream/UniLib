@@ -16,12 +16,7 @@ CNode::CNode( POINT pos, POINT size ) : CNodeMenu( pos )
 	_colorBkg = 0xFF000000;
 	_description = "Node witch scrollbars";
 
-	if ( CNodeMenu::isInizialize() ){
-
-		_texture = new CCreateTexture( g_Device, size.x, size.y );
-		_Init = true;
-	}
-	else _Init = false;
+	_Init = false;
 }
 
 CNode::~CNode()
@@ -61,8 +56,9 @@ bool CNode::isInizialize()
 
 void CNode::onDraw( int so_V, int so_H )
 {
-	if ( g_Device == nullptr )
+	if ( !isInizialize() )
 		return;
+
 	_texture->Begin();
 	_texture->Clear( _colorBkg );
 

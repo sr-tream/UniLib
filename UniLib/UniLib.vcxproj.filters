@@ -92,6 +92,9 @@
     <ClCompile Include="TextClickable.cpp">
       <Filter>Файлы исходного кода\MenuManager\widget</Filter>
     </ClCompile>
+    <ClCompile Include="ContextMenu.cpp">
+      <Filter>Файлы исходного кода\MenuManager\widget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -149,6 +152,9 @@
       <Filter>Заголовочные файлы\MenuManager</Filter>
     </ClInclude>
     <ClInclude Include="TextClickable.h">
+      <Filter>Заголовочные файлы\MenuManager\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="ContextMenu.h">
       <Filter>Заголовочные файлы\MenuManager\widget</Filter>
     </ClInclude>
   </ItemGroup>

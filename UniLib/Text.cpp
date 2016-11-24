@@ -6,13 +6,7 @@ CText::CText( std::string text, DWORD color, POINT pos, CFontInfo* font, bool de
 	_color = color;
 	_description = "";
 
-	if ( g_Device != nullptr ){
-
-		_height = _font->GetHeight();
-		_width = _font->GetWidth( text.c_str() );
-		_Init = true;
-	}
-	else _Init = false;
+	_Init = false;
 }
 
 bool CText::isInizialize()
@@ -35,6 +29,9 @@ bool CText::isInizialize()
 
 void CText::onDraw( int so_V, int so_H )
 {
+	if ( !isInizialize() )
+		return;
+
 	_font->Print( _color, _text.c_str(), _pos.x - so_H, _pos.y - so_V );
 
 	if ( isMouseOnWidget( so_V, so_H ) && _menu != nullptr ){

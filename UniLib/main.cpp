@@ -112,6 +112,23 @@ void __stdcall CNetGame__destructor( void )
 	return ((void( __thiscall * ) (void *)) (g_SampAddr + SAMP_FUNC_CNETGAMEDESTRUCTOR))(g_SAMP);
 }
 
+auto test_node2 = new CMenu( "My menu 2", { 100, 100 } );
+void CALLBACK Variant( CContextMenu *_this, int id )
+{
+
+}
+void CALLBACK ClickText( CTextClickable *_this, UINT uMsg )
+{
+	if ( uMsg == WM_RBUTTONUP ){
+		CContextMenu* context = new CContextMenu( Variant );
+		context->AddVariant( "One" );
+		context->AddVariant( "Two" );
+		context->AddVariant( "Three" );
+		test_node2->SetContextMenu( context, true );
+		//delete context;
+	}
+}
+
 void CALLBACK mainloop()
 {
 	static bool Init = false;
@@ -165,8 +182,7 @@ void CALLBACK mainloop()
 		vlayout->AddChield( new CText( "Hello CText in node", -1, { 0, 250 } ), "static text2", true );
 
 		test_node->GetNode()->AddChield( vlayout, "vLayt", true );
-		auto test_node2 = new CMenu( "My menu 2", { 100, 100 } );
-		test_node2->GetNode()->AddChield( new CTextClickable( "Click", -1, nullptr, { 20, 50 } ), "click1", true );
+		test_node2->GetNode()->AddChield( new CTextClickable( "Click", -1, ClickText, { 20, 50 } ), "click1", true );
 		/** End test */
 
 		Init = true;

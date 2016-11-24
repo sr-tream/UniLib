@@ -41,7 +41,7 @@ void CDrawInfo::Line( int X, int Y, int X2, int Y2, DWORD color )
 	if ( !_init )
 		Initialize( _pDevice );
 
-	_pDraw->D3DLine( X, Y, X2, Y2, color );
+	_pDraw->DrawLine( X, Y, X2, Y2, 1, color );
 }
 
 

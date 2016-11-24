@@ -2,7 +2,7 @@
 
 CTextClickable::CTextClickable( std::string text,
 								DWORD color,
-								void(CALLBACK* pClick)(UINT),
+								void(CALLBACK* pClick)(CTextClickable*, UINT),
 								POINT pos,
 								CFontInfo* font,
 								bool deleteOnDestructor )
@@ -15,10 +15,13 @@ CTextClickable::CTextClickable( std::string text,
 
 void CTextClickable::onDraw( int so_V, int so_H )
 {
+	if ( !isInizialize() )
+		return;
+
 	_SO.x = so_H;
 	_SO.y = so_V;
 
-	if ( isMouseOnWidget( so_V, so_H ) )
+	if ( isMouseOnWidget( so_V, so_H ) && IsForeground((CMenu*)_menu) )
 		_draw->BorderBox( _pos.x - so_H - 1, _pos.y - so_V, _width + 3, _height + 3, _color, InvertColor( _color ) );
 	CText::onDraw( so_V, so_H );
 }
@@ -35,7 +38,7 @@ bool CTextClickable::onEvents( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 	case WM_RBUTTONDOWN:
 	case WM_RBUTTONUP:
 		if ( _pClick != nullptr )
-			_pClick( uMsg );
+			_pClick( this, uMsg );
 		return false;
 	default:
 		break;
@@ -44,7 +47,7 @@ bool CTextClickable::onEvents( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 	return true;
 }
 
-void CTextClickable::SetCallback( void(CALLBACK* pClick)(UINT) )
+void CTextClickable::SetCallback( void(CALLBACK* pClick)(CTextClickable*, UINT) )
 {
 	_pClick = pClick;
 }

@@ -40,6 +40,7 @@ template<typename T> void swap( T &a, T &b );
 #include "VerticalLayout.h"
 #include "Text.h"
 #include "TextClickable.h"
+#include "ContextMenu.h"
 #include "Menu.h"
 
 #include "Interface.h"

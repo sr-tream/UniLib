@@ -13,6 +13,9 @@ CVerticalLayout::CVerticalLayout( POINT pos ) : CNode( pos )
 
 void CVerticalLayout::onDraw( int so_V, int so_H )
 {
+	if ( !isInizialize() )
+		return;
+
 	if ( _Init )
 		return DrawLayout( so_V, so_H );
 

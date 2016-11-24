@@ -6,12 +6,6 @@
 class CMenu;
 extern std::vector<CMenu*> MenuList;
 
-struct stMenuInfo{
-	CMenu*		menu;
-	bool		autoRemove;
-	std::string name;
-};
-
 class CMenu : public CNodeMenu
 {
 public:
@@ -32,9 +26,13 @@ public:
 
 	virtual void SetMenuHelper( std::string, DWORD );
 
+	virtual void SetContextMenu( CContextMenu*, bool = false );
+
 protected:
 	CCreateTexture *_texture;
 	CNode *_node;
+	CContextMenu *_context;
+	bool _removeContext;
 	
 	std::string _title;
 	POINT _size;

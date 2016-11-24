@@ -18,9 +18,7 @@ CNodeMenu::CNodeMenu( POINT pos, CFontInfo* font, bool deleteOnDestructor )
 	}
 	_draw = new CDrawInfo( 40 );
 
-	if ( g_Device != nullptr )
-		_Init = true;
-	else _Init = false;
+	_Init = false;
 }
 
 CNodeMenu::~CNodeMenu()

@@ -2,21 +2,6 @@
 
 std::vector<CMenu*> MenuList;
 
-void CMenu::SetMenuHelper( std::string help, DWORD color )
-{
-	if ( help.empty() ){
-		p_helper.clear();
-		return;
-	}
-	while ( help.find( "\n" ) != std::string::npos ){
-		p_helper.push_back( help );
-		p_helper[p_helper.size() - 1].erase( help.find( "\n" ), help.length() - help.find( "\n" ) );
-		help.erase( 0, help.find( "\n" ) + 1 );
-	}
-	p_helper.push_back( help );
-	p_color = color;
-}
-
 CMenu::CMenu( std::string title, POINT size, std::string name, CNode* node, bool deleteOnDestructor ) : CNodeMenu()
 {
 	_title = title;
@@ -24,6 +9,8 @@ CMenu::CMenu( std::string title, POINT size, std::string name, CNode* node, bool
 	_description = "";
 	_move = false;
 	_pEventMove = nullptr;
+	_context = nullptr;
+	_removeContext = false;
 
 	if ( node != nullptr ){
 		_node = node;
@@ -35,17 +22,7 @@ CMenu::CMenu( std::string title, POINT size, std::string name, CNode* node, bool
 	}
 	_node->SetMenu( this );
 
-	if ( CNodeMenu::isInizialize() ){
-
-		_pos.x = (SCREEN_X - size.x) / 2;
-		_pos.y = (SCREEN_Y - size.y) / 2;
-		_header = _font->GetHeight() + 3;
-		_height = size.y + _header;
-		_width = size.x + 6;
-		_texture = new CCreateTexture( g_Device, size.x - (3 + _font->GetWidth( "X" )), _header );
-		_Init = true;
-	}
-	else _Init = false;
+	_Init = false;
 	MenuList.push_back( this );
 }
 
@@ -85,6 +62,9 @@ bool CMenu::isInizialize()
 
 void CMenu::onDraw( int so_V, int so_H )
 {
+	if ( !isInizialize() )
+		return;
+
 	if ( _move ){
 		SetMousePos( GetMousePos() );
 		_pos.x = _MP.x - _mvOffset.x;
@@ -98,7 +78,7 @@ void CMenu::onDraw( int so_V, int so_H )
 	_font->Print( -1, _title.c_str(), 1, 0 );
 	_texture->End();
 	_texture->Render( _pos.x, _pos.y );
-	if ( isMouseOnClose() && IsForeground( this ) ){
+	if ( isMouseOnClose() && IsForeground( this ) && _context == nullptr ){
 		_draw->Box( _pos.x + (_size.x - (3 + _font->GetWidth( "X" ))),
 					_pos.y, 9 + _font->GetWidth( "X" ), _header, 0xFFFF0000 );
 		SetMenuHelper( "Close\nЗакрыть", -1 );
@@ -116,6 +96,13 @@ void CMenu::onDraw( int so_V, int so_H )
 	_node->onDraw( so_V, so_H );
 
 	SetMousePos( GetMousePos() );
+
+	if ( _context != nullptr ){
+		p_helper.clear();
+		if ( _context->isInizialize() )
+			_context->onDraw();
+	}
+
 	if ( isMouseOnWidget() && !p_helper.empty() && IsForeground(this) ){
 		POINT M = GetMousePos();
 		float length = _font->GetWidth( p_helper[0].c_str() );
@@ -137,6 +124,16 @@ void CMenu::onDraw( int so_V, int so_H )
 bool CMenu::onEvents( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	SetMousePos(GetMousePos());
+
+	if ( _context != nullptr ){
+		if ( !_context->onEvents( hwnd, uMsg, wParam, lParam ) ){
+			if ( _removeContext )
+				delete _context;
+			_context = nullptr;
+		}
+		return false;
+	}
+
 	if ( !isMouseOnWidget() )
 		return true;
 
@@ -172,7 +169,8 @@ bool CMenu::onEvents( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 		break;
 	}
 
-	_node->onEvents( hwnd, uMsg, wParam, lParam );
+	if ( IsForeground( this ) )
+		_node->onEvents( hwnd, uMsg, wParam, lParam );
 	return false;
 }
 
@@ -194,6 +192,21 @@ POINT CMenu::GetSize()
 CNode* CMenu::GetNode()
 {
 	return _node;
+}
+
+void CMenu::SetMenuHelper( std::string help, DWORD color )
+{
+	if ( help.empty() ){
+		p_helper.clear();
+		return;
+	}
+	while ( help.find( "\n" ) != std::string::npos ){
+		p_helper.push_back( help );
+		p_helper[p_helper.size() - 1].erase( help.find( "\n" ), help.length() - help.find( "\n" ) );
+		help.erase( 0, help.find( "\n" ) + 1 );
+	}
+	p_helper.push_back( help );
+	p_color = color;
 }
 
 bool CMenu::isMouseOnHeader()
@@ -219,6 +232,14 @@ bool CMenu::isMouseOnClose()
 void CMenu::SetEventMove( void(CALLBACK* pEventMove)(POINT) )
 {
 	_pEventMove = pEventMove;
+}
+
+void CMenu::SetContextMenu( CContextMenu* contextMenu, bool autoRemove )
+{
+	_context = contextMenu;
+	_removeContext = autoRemove;
+	_context->SetPosition( GetMousePos() );
+	_context->SetMenu( this );
 }
 
 void SetForeground( CMenu* menu )
