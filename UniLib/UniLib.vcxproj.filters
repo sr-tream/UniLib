@@ -15,6 +15,30 @@
     <Filter Include="Файлы исходного кода\RakNet">
       <UniqueIdentifier>{1205347e-a3dc-443d-98a8-679d30cd2f09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Заголовочные файлы\MenuManager">
+      <UniqueIdentifier>{6a5353d9-0d95-4922-bb2d-2ec1c0eb7450}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\MenuManager">
+      <UniqueIdentifier>{45ed66d4-aa53-470b-859a-2d1e38c842f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\MenuManager\backend">
+      <UniqueIdentifier>{907fafb3-9fce-457e-bb81-329adc07d1e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\MenuManager\backend">
+      <UniqueIdentifier>{570e3341-3e5d-49f0-8d7b-4c0cea682ad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\MenuManager\layout">
+      <UniqueIdentifier>{3af52ada-5b4f-415d-89b4-914d59f9d2a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\MenuManager\layout">
+      <UniqueIdentifier>{fa196c0a-1ede-427d-b6d5-8cfcb67dc3ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\MenuManager\widget">
+      <UniqueIdentifier>{87bde3a7-14ec-4f84-9472-1ce263eafdcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\MenuManager\widget">
+      <UniqueIdentifier>{288622fd-ce2f-4deb-b2ba-860e37e51f91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -49,6 +73,24 @@
     </ClCompile>
     <ClCompile Include="BSInfo.cpp">
       <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeMenu.cpp">
+      <Filter>Файлы исходного кода\MenuManager\backend</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Файлы исходного кода\MenuManager\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Файлы исходного кода\MenuManager\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="VerticalLayout.cpp">
+      <Filter>Файлы исходного кода\MenuManager\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Файлы исходного кода\MenuManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TextClickable.cpp">
+      <Filter>Файлы исходного кода\MenuManager\widget</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +132,24 @@
     </ClInclude>
     <ClInclude Include="BSInfo.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeMenu.h">
+      <Filter>Заголовочные файлы\MenuManager\backend</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Заголовочные файлы\MenuManager\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Заголовочные файлы\MenuManager\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="VerticalLayout.h">
+      <Filter>Заголовочные файлы\MenuManager\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Заголовочные файлы\MenuManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TextClickable.h">
+      <Filter>Заголовочные файлы\MenuManager\widget</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

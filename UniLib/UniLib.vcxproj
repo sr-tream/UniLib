@@ -95,8 +95,14 @@
     <ClCompile Include="HookedRakClient.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="NodeMenu.cpp" />
     <ClCompile Include="RakClient.cpp" />
     <ClCompile Include="SampInfo.cpp" />
+    <ClCompile Include="TextClickable.cpp" />
+    <ClCompile Include="Text.cpp" />
+    <ClCompile Include="VerticalLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BitStream.h" />
@@ -110,8 +116,14 @@
     <ClInclude Include="HookedRakClient.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="NodeMenu.h" />
     <ClInclude Include="RakClient.h" />
     <ClInclude Include="SampInfo.h" />
+    <ClInclude Include="TextClickable.h" />
+    <ClInclude Include="Text.h" />
+    <ClInclude Include="VerticalLayout.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

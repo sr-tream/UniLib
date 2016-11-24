@@ -154,6 +154,23 @@ void CALLBACK mainloop()
 
 		//AddChatMessage( -1, "Hello UniLib" );
 
+		/** Start test MenuManager */
+		auto test_node = new CMenu( "My menu", { 350, 200 } );
+		test_node->GetNode()->AddChield( new CText( "Hello CText in node", -1, { 0, 70 } ), "static text", true );
+		test_node->GetNode()->GetChield( "static text" )->SetDescription( "1337\n228" );
+		POINT ЕбучийКостыль = { 0, 200 }; // Я не понимаю хули он не хочет CVerticalLayout({0, 200})
+		CVerticalLayout *vlayout = new CVerticalLayout( ЕбучийКостыль ); // Если делать по человечески (коммент выше), то ругает за explicit
+		vlayout->AddChield( new CText( "Hello CText in node", -1, { 0, 150 } ), "static text", true );
+		vlayout->GetChield( "static text" )->SetDescription( "Static text" );
+		vlayout->AddChield( new CText( "Hello CText in node", -1, { 0, 250 } ), "static text2", true );
+
+		// TODO: vlayout не получает указатель на родительский CMenu
+
+		test_node->GetNode()->AddChield( vlayout, "vLayt", true );
+		auto test_node2 = new CMenu( "My menu 2", { 100, 100 } );
+		test_node2->GetNode()->AddChield( new CTextClickable( "Click", -1, nullptr, { 20, 50 } ), "click1", true );
+		/** End test */
+
 		Init = true;
 	} else {
 		for ( int i = 0; i < listMainloop.size(); ++i )
@@ -183,6 +200,11 @@ void CALLBACK D3DPresent( IDirect3DDevice9* pDevice )
 
 	for ( int i = 0; i < listPresent.size(); ++i )
 		listPresent[i]( pDevice );
+
+	for ( int i = 0; i < MenuList.size(); ++i ){
+		if ( MenuList[i]->isInizialize() && MenuList[i]->isShowed() )
+			MenuList[i]->onDraw();
+	}
 }
 
 bool HandleRPCPacketFunc( unsigned char id, RPCParameters *rpcParams ) // in RPC
@@ -227,6 +249,13 @@ bool OnSendPacket( BitStream * bitStream, PacketPriority priority, PacketReliabi
 
 LRESULT APIENTRY WndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
+	if ( hwnd == *(HWND*)0xC97C1C )
+		for ( int i = MenuList.size() - 1; i >= 0; --i ){
+			if ( MenuList[i]->isShowed() )
+				if ( !MenuList[i]->onEvents( hwnd, uMsg, wParam, lParam ) )
+					break;
+		}
+
 	bool result = true;
 	for ( int i = 0; i < listWndProc.size(); ++i ){
 		if ( !listWndProc[i]( hwnd, uMsg, wParam, lParam ) )

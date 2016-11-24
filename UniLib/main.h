@@ -20,6 +20,7 @@ extern DWORD g_SampAddr;
 extern struct stSAMP* g_SAMP;
 
 template<typename T> void VectorErase( std::vector<T> &vec, T v );
+template<typename T> void swap( T &a, T &b );
 
 #include "CMem.hpp"
 #include "CHooks.hpp"
@@ -33,6 +34,13 @@ template<typename T> void VectorErase( std::vector<T> &vec, T v );
 #include "RakClient.h"
 #include "HookedRakClient.h"
 #include "BSInfo.h"
+
+#include "NodeMenu.h"
+#include "Node.h"
+#include "VerticalLayout.h"
+#include "Text.h"
+#include "TextClickable.h"
+#include "Menu.h"
 
 #include "Interface.h"
 
@@ -55,4 +63,12 @@ inline void VectorErase( std::vector<T> &vec, T v )
 			break;
 		}
 	}
+}
+
+template<typename T>
+inline void swap( T &a, T &b )
+{
+	T c = a;
+	a = b;
+	b = c;
 }
