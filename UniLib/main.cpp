@@ -164,8 +164,6 @@ void CALLBACK mainloop()
 		vlayout->GetChield( "static text" )->SetDescription( "Static text" );
 		vlayout->AddChield( new CText( "Hello CText in node", -1, { 0, 250 } ), "static text2", true );
 
-		// TODO: vlayout не получает указатель на родительский CMenu
-
 		test_node->GetNode()->AddChield( vlayout, "vLayt", true );
 		auto test_node2 = new CMenu( "My menu 2", { 100, 100 } );
 		test_node2->GetNode()->AddChield( new CTextClickable( "Click", -1, nullptr, { 20, 50 } ), "click1", true );

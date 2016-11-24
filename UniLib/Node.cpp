@@ -44,7 +44,11 @@ bool CNode::isInizialize()
 	if ( !CNodeMenu::isInizialize() )
 		return false;
 
+	if ( _menu == nullptr )
+		return false;
+
 	for ( int i = 0; i < _nodes.size(); ++i ){
+		_nodes[i].node->SetMenu( _menu );
 		if ( !_nodes[i].node->isInizialize() )
 			return false;
 	}
