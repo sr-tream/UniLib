@@ -13,8 +13,8 @@ public:
 
 	virtual ~CNodeMenu();
 
-	virtual void onDraw( int, int ) = 0;
-	virtual bool onEvents( HWND, UINT, WPARAM, LPARAM ) = 0;
+	virtual void onDraw( int, int );
+	virtual bool onEvents( HWND, UINT, WPARAM, LPARAM );
 
 	virtual bool isInizialize();
 
@@ -32,7 +32,9 @@ public:
 
 	virtual void SetMousePos( POINT );
 
-	virtual void SetEventShow( void(CALLBACK*)(bool) );
+	virtual void SetEventShow( void(CALLBACK*)(CNodeMenu*, bool) );
+	virtual void SetEventMove( void(CALLBACK*)(CNodeMenu*, POINT) );
+	virtual void SetEventClick( void(CALLBACK*)(CNodeMenu*, UINT) );
 
 	virtual void SetMenu( CNodeMenu *menu );
 
@@ -47,7 +49,12 @@ protected:
 	int _width; // Длина элемента, задается из наследников
 	POINT _MP;
 	POINT _SO;
-	void(CALLBACK* _pEventShow)(bool);
+
+	void(CALLBACK* _pEventShow)(CNodeMenu*, bool);
+	void(CALLBACK* _pEventMove)(CNodeMenu*, POINT);
+	void(CALLBACK* _pEventClick)(CNodeMenu*, UINT);
+
+	DWORD _colorSelect;
 
 	POINT GetMousePos();
 	bool isMouseOnWidget( int = 0, int = 0 );

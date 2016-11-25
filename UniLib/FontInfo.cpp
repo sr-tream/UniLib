@@ -66,7 +66,7 @@ float CFontInfo::GetHeight()
 	if ( !_init )
 		Initialize( _pDevice );
 
-	return _pFont->DrawHeight();
+	return _pFont->DrawHeight() + 1;
 }
 
 
@@ -75,7 +75,7 @@ float CFontInfo::GetWidth( const char* szText )
 	if ( !_init )
 		Initialize( _pDevice );
 
-	return _pFont->DrawLength(szText);
+	return _pFont->DrawLength(szText) + 2;
 }
 
 

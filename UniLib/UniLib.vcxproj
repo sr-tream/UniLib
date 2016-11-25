@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -95,13 +95,13 @@
     <ClCompile Include="FontInfo.cpp" />
     <ClCompile Include="HookedRakClient.cpp" />
     <ClCompile Include="Interface.cpp" />
+    <ClCompile Include="Listing.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="NodeMenu.cpp" />
     <ClCompile Include="RakClient.cpp" />
     <ClCompile Include="SampInfo.cpp" />
-    <ClCompile Include="TextClickable.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="VerticalLayout.cpp" />
   </ItemGroup>
@@ -117,13 +117,13 @@
     <ClInclude Include="FontInfo.h" />
     <ClInclude Include="HookedRakClient.h" />
     <ClInclude Include="Interface.h" />
+    <ClInclude Include="Listing.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="NodeMenu.h" />
     <ClInclude Include="RakClient.h" />
     <ClInclude Include="SampInfo.h" />
-    <ClInclude Include="TextClickable.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="VerticalLayout.h" />
   </ItemGroup>

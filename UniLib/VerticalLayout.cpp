@@ -5,10 +5,7 @@ CVerticalLayout::CVerticalLayout( POINT pos ) : CNode( pos )
 	_height = 0;
 	_width = 0;
 
-	if ( CNode::isInizialize() ){
-		_Init = true;
-	}
-	else _Init = false;
+	_Init = false;
 }
 
 void CVerticalLayout::onDraw( int so_V, int so_H )
@@ -145,8 +142,7 @@ void CVerticalLayout::DrawLayout( int so_V, int so_H )
 
 	_texture->End();
 	_texture->Render( _pos.x - so_H, _pos.y - so_V );
-	_SO.x = so_H;
-	_SO.y = so_V;
+	CNodeMenu::onDraw( so_V, so_H );
 }
 
 bool CVerticalLayout::onEvents( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
@@ -160,5 +156,5 @@ bool CVerticalLayout::onEvents( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 				return false;
 	}
 
-	return true;
+	return CNodeMenu::onEvents( hwnd, uMsg, wParam, lParam );
 }

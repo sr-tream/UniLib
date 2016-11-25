@@ -34,12 +34,5 @@ void CText::onDraw( int so_V, int so_H )
 
 	_font->Print( _color, _text.c_str(), _pos.x - so_H, _pos.y - so_V );
 
-	if ( isMouseOnWidget( so_V, so_H ) && _menu != nullptr ){
-		((CMenu*)_menu)->SetMenuHelper( _description, _color );
-	}
-}
-
-bool CText::onEvents( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
-{
-	return true;
+	CNodeMenu::onDraw( so_V, so_H );
 }

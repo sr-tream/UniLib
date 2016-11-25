@@ -38,8 +38,8 @@ template<typename T> void swap( T &a, T &b );
 #include "NodeMenu.h"
 #include "Node.h"
 #include "VerticalLayout.h"
+#include "Listing.h"
 #include "Text.h"
-#include "TextClickable.h"
 #include "ContextMenu.h"
 #include "Menu.h"
 

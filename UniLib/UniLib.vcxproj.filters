@@ -89,11 +89,11 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Файлы исходного кода\MenuManager</Filter>
     </ClCompile>
-    <ClCompile Include="TextClickable.cpp">
-      <Filter>Файлы исходного кода\MenuManager\widget</Filter>
-    </ClCompile>
     <ClCompile Include="ContextMenu.cpp">
       <Filter>Файлы исходного кода\MenuManager\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="Listing.cpp">
+      <Filter>Файлы исходного кода\MenuManager\layout</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,11 +151,11 @@
     <ClInclude Include="Menu.h">
       <Filter>Заголовочные файлы\MenuManager</Filter>
     </ClInclude>
-    <ClInclude Include="TextClickable.h">
-      <Filter>Заголовочные файлы\MenuManager\widget</Filter>
-    </ClInclude>
     <ClInclude Include="ContextMenu.h">
       <Filter>Заголовочные файлы\MenuManager\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="Listing.h">
+      <Filter>Заголовочные файлы\MenuManager\layout</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

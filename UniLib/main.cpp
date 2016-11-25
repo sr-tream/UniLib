@@ -117,13 +117,14 @@ void CALLBACK Variant( CContextMenu *_this, int id )
 {
 
 }
-void CALLBACK ClickText( CTextClickable *_this, UINT uMsg )
+void CALLBACK ClickText( CNodeMenu *_this, UINT uMsg )
 {
-	if ( uMsg == WM_RBUTTONUP ){
+	if ( uMsg == WM_RBUTTONDOWN ){
 		CContextMenu* context = new CContextMenu( Variant );
 		context->AddVariant( "One" );
 		context->AddVariant( "Two" );
 		context->AddVariant( "Three" );
+		context->AddVariant( "long item" );
 		test_node2->SetContextMenu( context, true );
 		//delete context;
 	}
@@ -176,13 +177,19 @@ void CALLBACK mainloop()
 		test_node->GetNode()->AddChield( new CText( "Hello CText in node", -1, { 0, 70 } ), "static text", true );
 		test_node->GetNode()->GetChield( "static text" )->SetDescription( "1337\n228" );
 		POINT ЕбучийКостыль = { 0, 200 }; // Я не понимаю хули он не хочет CVerticalLayout({0, 200})
-		CVerticalLayout *vlayout = new CVerticalLayout( ЕбучийКостыль ); // Если делать по человечески (коммент выше), то ругает за explicit
+		//CVerticalLayout *vlayout = new CVerticalLayout(ЕбучийКостыль); // Если делать по человечески (коммент выше), то ругает за explicit
+		CListing *vlayout = new CListing( ЕбучийКостыль, {10, 20} ); // Если делать по человечески (коммент выше), то ругает за explicit
 		vlayout->AddChield( new CText( "Hello CText in node", -1, { 0, 150 } ), "static text", true );
 		vlayout->GetChield( "static text" )->SetDescription( "Static text" );
 		vlayout->AddChield( new CText( "Hello CText in node", -1, { 0, 250 } ), "static text2", true );
 
 		test_node->GetNode()->AddChield( vlayout, "vLayt", true );
-		test_node2->GetNode()->AddChield( new CTextClickable( "Click", -1, ClickText, { 20, 50 } ), "click1", true );
+		test_node->GetNode()->SetColorBkg( 0xF8808080 );
+		test_node2->GetNode()->AddChield( new CText( "Click", -1, { 20, 50 } ), "click1", true );
+		test_node2->GetNode()->SetColorBkg( 0xF88080E8 );
+		CText* textClickable = (CText*)test_node2->GetNode()->GetChield( "click1" );
+		textClickable->SetDescription( "Clickable text" );
+		textClickable->SetEventClick( ClickText );
 		/** End test */
 
 		Init = true;

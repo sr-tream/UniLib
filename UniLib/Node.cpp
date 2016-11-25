@@ -14,7 +14,6 @@ CNode::CNode( POINT pos, POINT size ) : CNodeMenu( pos )
 	_scrollMat = 0xFF0000FF;
 	_scrollRoller = 0xFFFF0000;
 	_colorBkg = 0xFF000000;
-	_description = "Node witch scrollbars";
 
 	_Init = false;
 }
@@ -84,8 +83,7 @@ void CNode::onDraw( int so_V, int so_H )
 	_texture->Render( _pos.x - so_H, _pos.y - so_V );
 	DrawScrollBarVertical( so_V, so_H );
 	DrawScrollBarHorizontal( so_V, so_H );
-	_SO.x = so_H;
-	_SO.y = so_V;
+	CNodeMenu::onDraw( so_V, so_H );
 }
 
 void CNode::DrawScrollBarVertical( int so_V, int so_H )
@@ -175,7 +173,7 @@ bool CNode::onEvents( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 		break;
 	}
 
-	return true;
+	return CNodeMenu::onEvents(hwnd, uMsg, wParam, lParam);
 }
 
 void CNode::SetSize( POINT sz )

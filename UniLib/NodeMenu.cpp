@@ -4,9 +4,12 @@ CNodeMenu::CNodeMenu( POINT pos, CFontInfo* font, bool deleteOnDestructor )
 {
 	_pos = pos;
 	_show = true;
+	_pEventMove = nullptr;
 	_pEventShow = nullptr;
+	_pEventClick = nullptr;
 	_menu = nullptr;
 	_SO = { 0, 0 };
+	_colorSelect = -1;
 
 	if ( font != nullptr ){
 		_font = font;
@@ -27,6 +30,47 @@ CNodeMenu::~CNodeMenu()
 		delete _font;
 	delete _draw;
 }
+void CNodeMenu::onDraw( int so_V, int so_H )
+{
+	if ( !isInizialize() )
+		return;
+
+	_SO.x = so_H;
+	_SO.y = so_V;
+
+	if ( isMouseOnWidget( so_V, so_H ) && _menu != nullptr ){
+
+		if ( ((CMenu*)_menu)->isActive() ){
+
+			if ( _pEventClick != nullptr && _menu != this )
+				_draw->BorderBox( _pos.x - so_H - 1, _pos.y - so_V - 1, _width + 2, _height + 2, _colorSelect, 0 );
+
+			if ( !_description.empty() )
+				((CMenu*)_menu)->SetMenuHelper( _description );
+		}
+	}
+}
+
+bool CNodeMenu::onEvents( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
+{
+	if ( !isMouseOnWidget( _SO.y, _SO.x ) )
+		return true;
+
+	switch ( uMsg )
+	{
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+	case WM_RBUTTONDOWN:
+	case WM_RBUTTONUP:
+		if ( _pEventClick != nullptr )
+			_pEventClick( this, uMsg );
+		return false;
+	default:
+		break;
+	}
+
+	return true;
+}
 
 bool CNodeMenu::isInizialize()
 {
@@ -46,6 +90,8 @@ bool CNodeMenu::isInizialize()
 void CNodeMenu::SetPosition( POINT pos )
 {
 	_pos = pos;
+	if ( _pEventMove != nullptr )
+		_pEventMove( this, _pos );
 }
 
 POINT CNodeMenu::GetPosition()
@@ -62,7 +108,7 @@ void CNodeMenu::SetShow( bool show )
 {
 	_show = show;
 	if ( _pEventShow != nullptr )
-		_pEventShow( _show );
+		_pEventShow( this, _show );
 }
 
 int CNodeMenu::GetHeight()
@@ -115,9 +161,19 @@ DWORD CNodeMenu::InvertColor( DWORD color )
 	return D3DCOLOR_ARGB( ARGB.b[3], 0xFF - ARGB.b[2], 0xFF - ARGB.b[1], 0xFF - ARGB.b[0] );
 }
 
-void CNodeMenu::SetEventShow( void(CALLBACK*pEventShow)(bool) )
+void CNodeMenu::SetEventShow( void(CALLBACK*pEventShow)(CNodeMenu*, bool) )
 {
 	_pEventShow = pEventShow;
+}
+
+void CNodeMenu::SetEventMove( void(CALLBACK* pEventMove)(CNodeMenu*, POINT) )
+{
+	_pEventMove = pEventMove;
+}
+
+void CNodeMenu::SetEventClick( void(CALLBACK* pEventClick)(CNodeMenu*, UINT) )
+{
+	_pEventClick = pEventClick;
 }
 
 void CNodeMenu::SetMenu( CNodeMenu *menu )

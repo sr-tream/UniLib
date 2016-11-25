@@ -8,9 +8,9 @@ CMenu::CMenu( std::string title, POINT size, std::string name, CNode* node, bool
 	_size = size;
 	_description = "";
 	_move = false;
-	_pEventMove = nullptr;
 	_context = nullptr;
 	_removeContext = false;
+	_menu = this;
 
 	if ( node != nullptr ){
 		_node = node;
@@ -71,23 +71,23 @@ void CMenu::onDraw( int so_V, int so_H )
 		_pos.y = _MP.y - _mvOffset.y;
 	}
 	else if ( isMouseOnHeader() )
-		SetMenuHelper( _description, -1 );
+		SetMenuHelper( _description );
 
 	_texture->Begin();
 	_texture->Clear( 0xFF000000 );
 	_font->Print( -1, _title.c_str(), 1, 0 );
 	_texture->End();
 	_texture->Render( _pos.x, _pos.y );
-	if ( isMouseOnClose() && IsForeground( this ) && _context == nullptr ){
+	if ( isMouseOnClose() && isActive() ){
 		_draw->Box( _pos.x + (_size.x - (3 + _font->GetWidth( "X" ))),
-					_pos.y, 9 + _font->GetWidth( "X" ), _header, 0xFFFF0000 );
-		SetMenuHelper( "Close\nЗакрыть", -1 );
+					_pos.y, 10 + _font->GetWidth( "X" ), _header, 0xFFFF0000 );
+		SetMenuHelper( "Close\nЗакрыть" );
 	}
 	else{
 		_draw->Box( _pos.x + (_size.x - (3 + _font->GetWidth( "X" ))),
-					_pos.y, 9 + _font->GetWidth( "X" ), _header, 0xFFFF6060 );
+					_pos.y, 10 + _font->GetWidth( "X" ), _header, 0xFFFF6060 );
 	}
-	_font->Print( -1, "X", _pos.x + (_size.x - _font->GetWidth( "X" ) + 1), _pos.y );
+	_font->Print( -1, "X", _pos.x + (_size.x - _font->GetWidth( "X" ) + 2), _pos.y );
 	_draw->Box( _pos.x, _pos.y + _header - 1, _size.x + 6, 1, -1 );
 
 	_node->SetPosition( { _pos.x, _pos.y + _header } );
@@ -111,11 +111,14 @@ void CMenu::onDraw( int so_V, int so_H )
 				length = _font->GetWidth( p_helper[i].c_str() );
 		}
 		int x_offset = 0;
-		if ( M.x + 16 + length > SCREEN_X )
-			x_offset = (M.x + 16 + length) - SCREEN_X;
-		_draw->BorderBox( (M.x + 16) - x_offset, M.y + 16, length + 3, _font->GetHeight() * p_helper.size() + 3, p_color, InvertColor( p_color ) );
+		if ( M.x + 19 + length > SCREEN_X )
+			x_offset = (M.x + 19 + length) - SCREEN_X;
+		int y_offset = 0;
+		if ( M.y + 19 + _font->GetHeight() * p_helper.size() > SCREEN_Y )
+			y_offset = (M.y + 19 + _font->GetHeight() * p_helper.size()) - SCREEN_Y;
+		_draw->BorderBox( (M.x + 16) - x_offset, M.y + 16 - y_offset, length + 3, _font->GetHeight() * p_helper.size() + 3, -1, 0xF8000000 );
 		for ( int i = 0; i < p_helper.size(); ++i )
-			_font->Print( p_color, p_helper[i].c_str(), (M.x + 17) - x_offset, M.y + 16 + _font->GetHeight() * i );
+			_font->Print( -1, p_helper[i].c_str(), (M.x + 17) - x_offset, M.y + 16 + _font->GetHeight() * i - y_offset );
 	}
 	p_helper.clear();
 	//p_helper.shrink_to_fit();
@@ -162,7 +165,7 @@ bool CMenu::onEvents( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 			_pos.y = _MP.y - _mvOffset.y;
 			_move = false;
 			if ( _pEventMove != nullptr )
-				_pEventMove( _pos );
+				_pEventMove( this, _pos );
 		}
 		break;
 	default:
@@ -194,7 +197,7 @@ CNode* CMenu::GetNode()
 	return _node;
 }
 
-void CMenu::SetMenuHelper( std::string help, DWORD color )
+void CMenu::SetMenuHelper( std::string help )
 {
 	if ( help.empty() ){
 		p_helper.clear();
@@ -206,7 +209,6 @@ void CMenu::SetMenuHelper( std::string help, DWORD color )
 		help.erase( 0, help.find( "\n" ) + 1 );
 	}
 	p_helper.push_back( help );
-	p_color = color;
 }
 
 bool CMenu::isMouseOnHeader()
@@ -229,17 +231,19 @@ bool CMenu::isMouseOnClose()
 	return false;
 }
 
-void CMenu::SetEventMove( void(CALLBACK* pEventMove)(POINT) )
-{
-	_pEventMove = pEventMove;
-}
-
 void CMenu::SetContextMenu( CContextMenu* contextMenu, bool autoRemove )
 {
 	_context = contextMenu;
 	_removeContext = autoRemove;
 	_context->SetPosition( GetMousePos() );
 	_context->SetMenu( this );
+}
+
+bool CMenu::isActive()
+{
+	if ( IsForeground( this ) && _context == nullptr )
+		return true;
+	return false;
 }
 
 void SetForeground( CMenu* menu )

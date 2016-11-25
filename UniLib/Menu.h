@@ -22,11 +22,11 @@ public:
 
 	virtual CNode* GetNode();
 
-	virtual void SetEventMove( void(CALLBACK*)(POINT) );
-
-	virtual void SetMenuHelper( std::string, DWORD );
+	virtual void SetMenuHelper( std::string );
 
 	virtual void SetContextMenu( CContextMenu*, bool = false );
+
+	virtual bool isActive();
 
 protected:
 	CCreateTexture *_texture;
@@ -41,10 +41,7 @@ protected:
 	bool isMouseOnHeader();
 	bool isMouseOnClose();
 
-	void(CALLBACK* _pEventMove)(POINT);
-
 	std::vector<std::string> p_helper;
-	DWORD p_color;
 
 private:
 	bool _Init;

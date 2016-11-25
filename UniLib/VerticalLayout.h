@@ -3,7 +3,7 @@
 class CVerticalLayout : public CNode
 {
 public:
-	CVerticalLayout( POINT );
+	CVerticalLayout( POINT = { 0, 0 } );
 
 	virtual void onDraw( int = 0, int = 0 );
 	virtual bool onEvents( HWND, UINT, WPARAM, LPARAM );

@@ -8,7 +8,6 @@ public:
 	virtual bool isInizialize();
 
 	virtual void onDraw( int = 0, int = 0 );
-	virtual bool onEvents( HWND, UINT, WPARAM, LPARAM );
 
 protected:
 	std::string _text;

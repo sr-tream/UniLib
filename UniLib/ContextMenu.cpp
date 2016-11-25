@@ -33,11 +33,16 @@ bool CContextMenu::isInizialize()
 	}
 
 	for ( int i = 0; i < _vars.size(); ++i ){
-		if ( _vars[i]->GetWidth() > _width )
+		if ( _vars[i]->GetWidth() + 3 > _width )
 			_width = _vars[i]->GetWidth() + 3;
 	}
 
-	_height = _font->GetHeight() * _vars.size() + 3;
+	_height = _font->GetHeight() * _vars.size() + 5;
+
+	if ( _pos.y + _height > SCREEN_Y )
+		_pos.y = SCREEN_Y - _height;
+	if ( _pos.x + _width > SCREEN_X )
+		_pos.x = SCREEN_X - _width;
 
 	_Init = true;
 	return true;
@@ -50,9 +55,9 @@ void CContextMenu::AddVariant( std::string text, DWORD color )
 	_vars.push_back( var );
 
 	if ( _Init ){
-		if ( var->GetWidth() > _width )
+		if ( var->GetWidth() + 3 > _width )
 			_width = var->GetWidth() + 3;
-		_height = _font->GetHeight() * _vars.size() + 3;
+		_height = _font->GetHeight() * _vars.size() + 5;
 	}
 }
 
@@ -68,11 +73,10 @@ void CContextMenu::onDraw( int so_V, int so_H )
 
 	_draw->BorderBox( _pos.x - 1, _pos.y - 1, _width, _height, InvertColor( _color ), _color );
 
-	SetMousePos( GetMousePos() );
 	for ( int i = 0; i < _vars.size(); ++i ){
 		if ( isMouseOnVariant( i ) )
-			_draw->Box( _pos.x, _pos.y + i * _font->GetHeight(),
-			_vars[i]->GetWidth(), _vars[i]->GetHeight(), InvertColor( _color ) );
+			_draw->Box( _pos.x + 1, _pos.y + i * _font->GetHeight() + 1,
+			_vars[i]->GetWidth() - 1, _vars[i]->GetHeight() + 1, InvertColor( _color ) );
 
 		_vars[i]->SetPosition( _pos );
 		_vars[i]->onDraw( -(i * _font->GetHeight()) );
@@ -91,9 +95,11 @@ bool CContextMenu::onEvents( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 			if ( isMouseOnVariant(i) ){
 				if ( _pCall != nullptr )
 					_pCall( this, i );
-				break;
+				return false;
 			}
 		}
+		if ( _pCall != nullptr && isMouseOnWidget() )
+			_pCall( this, -1 );
 		return false;
 	}
 
@@ -108,4 +114,14 @@ bool CContextMenu::isMouseOnVariant( int id )
 		 _MP.y < (_pos.y + id * _font->GetHeight()) + _vars[id]->GetHeight() )
 		return true;
 	return false;
+}
+
+void CContextMenu::SetPosition( POINT pos )
+{
+	if ( pos.y + _height > SCREEN_Y )
+		pos.y = SCREEN_Y - _height;
+	if ( pos.x + _width > SCREEN_X )
+		pos.x = SCREEN_X - _width;
+
+	return CNodeMenu::SetPosition( pos );
 }
